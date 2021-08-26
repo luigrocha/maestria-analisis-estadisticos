@@ -4,6 +4,12 @@
 #de la poblacion de los USA . 
 #Mas información en https://www.rdocumentation.org/packages/ggplot2/versions/3.3.2/topics/midwest
 #Cargamos el dataset con : 
+
+install.packages('ggplot2')
+??ggplot2
+install.packages('tidyverse')
+library(tidyverse)
+library(ggplot2)
 data(midwest)
 #Para referirnos a los campos (columnas)  como variables podemos usar el comando:
 attach(midwest)
@@ -40,6 +46,7 @@ mid[mid$percollege==min(mid$percollege),vector_cols]
 #IndoAmericana es mayoritaria. 
 #Analicemos la densidad poblacional de estos estados, nos interesa saber
 #la moda
+install.packages("modeest")
 require(modeest)
 moda_densidad<- mlv(mid$popdensity, method="mfv")
 moda_densidad
@@ -54,6 +61,7 @@ var1
 sqrt(var1)
 sd(mid$popdensity)
 #podemos ver gráficamente la distribucion de la densidad de la poblacion 
+require(ggplot2)
 ggplot(mid , aes(x=popdensity)) +
   geom_density()
 
@@ -83,8 +91,7 @@ print(qwhite)
 
 ggplot(qwdf, aes(x=qwhite, y=vect_cuantiles)) + 
   geom_boxplot(outlier.colour="red", outlier.shape=8,
-               outlier.size=4)+
-  coord_flip()
+               outlier.size=4)+coord_flip()
 
 
 
@@ -112,9 +119,33 @@ class(mtcars)
 #Usamos subsetting para  que no salga una matriz de todas las columnas 
 #contra todas las columnas. Seleccionamos solo las priemras 4 
 #El estudiante podria seleccionar otras de su interés 
+#1.
+mtcars
+apply(mtcars, 2, median)
+mean(mpg)
+summary(mtcars)
+median(mtcars$mpg)
 
+max(mtcars$hp)
+min(mtcars$qsec)
+
+var(mtcars$disp, na.rm = FALSE)
+
+sd(mtcars$disp, na.rm = FALSE)
+
+#head(mtcars$carb)
+v = sqrt(var(mtcars$disp))
+v
+head(mtcars)
+head(mtcars$carb, 1)
+tail(mtcars)
+tail(mtcars$gear, 6)
+
+runif(mtcars, 1,7)
 cor(mtcars[,1:4])
 #Analice los resultados. Indique cuales son las variables que de alta correlación
+
+
 
 
 #Veamos otro ejemplo con el dataset economics
@@ -148,7 +179,7 @@ econ_melted <- melt(cor_economics, varname=c("X","Y"), value.name="Correlacion")
 econ_melted
 class(econ_melted)
 #ahora le ploteamos como heat map
-#antes le orenamos para que nos salga bonito el grafico
+#antes le ordenamos para que nos salga bonito el grafico
 econ_melted <- econ_melted[order(econ_melted$Correlacion),]
 econ_melted <- econ_melted[order(Correlacion, decreasing = TRUE)]
 
