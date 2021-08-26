@@ -1,4 +1,4 @@
-PARTE 1 Introducción a R 
+·PARTE 1 Introducción a R 
 ##################################################
 #En este video vamos a revisar los conceptos básicos de uso del RStudio,
 #así como el uso de principales comandos mencionados en el 
@@ -95,8 +95,9 @@ y[3]+15
 #lo que necesita es una lista
 #Una lista puede ser creada en distintas formas pero la más común es mediante
 #el operador punto (.)
+
 #Por ejemplo 
-amigos <- .("Pedro", 50,TRUE, "Carlos", 55, FALSE)
+amigos <- . ("Pedro", 50,TRUE, "Carlos", 55, FALSE)
 amigos
 
 #VARIABLES
@@ -129,7 +130,7 @@ descripcion2 <- paste(as.character(existe),descipcion1)
 descripcion2
 #Si tiene dudas del tipo de variable que se trata  siempre puede usar
 #las funciones is.*  . Existen muchas, algunos ejemplos:
-is.numeric(descripcion)
+is.numeric(descripcion1)
 is.character(existe)
 is.logical(existe)
 
@@ -158,6 +159,7 @@ ahorita$yday
 #Los dos formatos son complicados de usar y requieren conversiones
 #Para trabajar con fechas es recomendable usar la librería lubridate
 #lubridate basado en POSIXct. Carguemos la librería
+install.packages('lubridate')
 require(lubridate)
 #provee varias funciones
 #Revisar el cheatsheet para ver todas las opciones
