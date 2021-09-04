@@ -57,6 +57,7 @@ head(den_serie3)
 #Primero vamos a graficar estas series, no se ve muy bien con pocos números 
 #primero creamos el data frame con los valores 
 df1 <- data.frame(x=serie1,y=den_serie1)
+df1
 #Una forma fácil de visualizar un data.frame es mediante la función plot()
 #Esta función no tienen muchas opciones ,pero hace su trabajo 
 par(mar=c(3,3,1,1)) #definimos unos márgenes para el plot 
@@ -244,10 +245,6 @@ sprintf("estadístico z para prob %1.4f es %1.4f",.005, qnorm(.0125))
 #Indique : Que tipo de distribución tiene
 s1 <- c(5, 24, 12, 25, 43, 43, 34, 21, 14, 36, 30, 16, 42, 10, 42, 29,  5, 19, 17,  8)
 s1
-#install.packages("rriskDistributions")
-#library(rriskDistributions)
-#res1<-fit.cont(data2fit=rnorm(s1) )
-#res1
 #Verifiquemos las características de la serie
 mean(s1) #debe ser cercanos a 0 para series grandes
 sd(s1) #deberia ser cercano a 1 para series grandes
@@ -255,30 +252,23 @@ var(s1)#deberia ser cercano a 1 para series grandes
 max(s1)
 print(skewness(s1))
 print(kurtosis(s1))
-#?rnorm
-s11 <- rnorm(s1, 23.75, 13.05)
-s11
-den_s1<-dnorm(s11)
-head(s11)
+den_s1<-dnorm(s1)
+head(s1)
 head(den_s1)
-dfs1 <- data.frame(x=s11,y=den_s1)
-den_s1
-par(mar=c(2,2,2,2)) #definimos unos márgenes para el plot 
+dfs1 <- data.frame(x=s1,y=den_s1)
+dfs1
+par(mar=c(3,3,2,2)) #definimos unos márgenes para el plot 
 #plotemos la densidad 
-plot(dfs1, type="h")
+plot(dfs1$x, type="h")
 #plotemos como histograma
-ggplot (dfs1, aes(x=x)) +
-  geom_histogram(binwidth = 1) + 
-  labs(x="numero ", y= "cuenta")
-#ahora ploteamos el valor 
-############################
-serie4 <-rnorm(s1 , mean=23.75, sd=13.05)
-df4 <- data.frame(X=serie4 , Y=dnorm(serie4, mean=23.75 ,sd=13.05))
-#grafiquemos  
-g<- ggplot(data=df4 , aes(x=X, y=Y))+
-  geom_point()+
-  geom_line()
-g
+hist(dfs1$x,
+     main="histograma s1",
+     xlab="serie 1",
+     xlim=c(0,50),
+     col="blue",
+     freq=FALSE
+)
+ggplot(dfs1, aes(x=x))+ geom_density()
 #Problema2 : La compañía Turra CA desea bajar el tiempo de atención 
 #a clientes, El gerente desea que la media de atención sea de 10 días
 #usted ha medido el proceso y sabe que tienen una distribución normal 
@@ -344,8 +334,8 @@ g<- ggplot(data=dfp2 , aes(x=X, y=Y))+
 g
 
 
-install.packages("rriskDistributions")
-library(rriskDistributions)
+#install.packages("rriskDistributions")
+#library(rriskDistributions)
 res1<-fit.cont(data2fit=rnorm(s1))
 res1
 
