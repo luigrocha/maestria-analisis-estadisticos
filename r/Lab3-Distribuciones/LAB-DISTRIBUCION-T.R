@@ -1,31 +1,32 @@
 #LABORATORIO DISTRIBUCION T
-#Es un miembro de una familia de distribuciones de probabilidad contínua
-#que surge al estimar la media de una población distribuida normalmente en
-#situaciones donde el tamaño de la muestra es pequeño y se desconoce
-#la desviación estándar de la población.
+#Es un miembro de una familia de distribuciones de probabilidad cont?nua
+#que surge al estimar la media de una poblaci?n distribuida normalmente en
+#situaciones donde el tama?o de la muestra es peque?o y se desconoce
+#la desviaci?n est?ndar de la poblaci?n.
 
-#Cargando librerías 
+#Cargando librer?as 
 rm(list=ls())
 require(ggplot2)
 require(plyr)
 require(stats)
 require(graphics)
 #########################################
-#1.1 Como  obtener  un vector con distribución T
-#La función es :rt(n, df, ncp)
+#1.1 Como  obtener  un vector con distribuci?n T
+#La funcion es : 
+#rt(n, df, ncp)
 
 #Donde : 
 #n:    es la cantidad de observaciones que se desea
 #df:   son los grados de libertad
-#ncp:  parámetro delta de no centralidad, si se omite usa distribución T central
+#ncp:  par?metro delta de no centralidad, si se omite usa distribuci?n T central
 
-#Ejemplo : Obtener un vector de 20 observaciones con distribución t con 10 grados
+#Ejemplo : Obtener un vector de 20 observaciones con distribuci?n t con 10 grados
 #de libertad
 rt(20,df=10)
 
-#Comparando las distribuciones T con distribución normal 
+#Comparando las distribuciones T con distribuci?n normal 
 #Realicemos un histograma
-#Podemos ver que la distribución T con pocas observaciones difiere de la normal
+#Podemos ver que la distribuci?n T con pocas observaciones difiere de la normal
 
 vec_t <- rt(50 , df=5 )
 vec_n <- rnorm(500)
@@ -38,13 +39,13 @@ ggplot (data=vec_n_df , aes(x=x))+
   xlab("Azul Dist Normal/Rojo Dist T")
 
 
-#Vemos que se parecen pero la distribución T es mucho más aplanada en las colas
-#realicemos el mismo gráfico, pero como distribución de densidad
+#Vemos que se parecen pero la distribuci?n T es mucho m?s aplanada en las colas
+#realicemos el mismo gr?fico, pero como distribuci?n de densidad
 vec_dt <-dt(vec_t, df=4)
 head(vec_dt)
 vec_dn<- dnorm(vec_n)
 head(vec_dn)
-#Veamos como varían las distribuciones (PDF) con los grados de libertad
+#Veamos como var?an las distribuciones (PDF) con los grados de libertad
 ggplot(data.frame(X=c(-4,4)), aes(x = X)) +
   stat_function(fun = dt, args =list(df=8), aes(color=8) )+
   stat_function(fun = dt, args =list(df=4), aes(color=4))+
@@ -52,11 +53,11 @@ ggplot(data.frame(X=c(-4,4)), aes(x = X)) +
   stat_function(fun = dt, args =list(df=1), aes(color=1))+
   stat_function(fun=dnorm, color="red")
 
-#Concluimos que la distribución T es parecida a la normal, pero mientras
+#Concluimos que la distribuci?n T es parecida a la normal, pero mientras
 #grados de libertad bajan la diferencia se hace notoria
 ######################################################
 ##1.2 Como obtener la densidad (PDF), obtener la probabilidad en 1 punto determinado 
-#la sintaxis de la función es dt(x, df, ncp, log = FALSE)
+#la sintaxis de la funci?n es dt(x, df, ncp, log = FALSE)
 #Donde : 
 #x:      vector de cuantiles.
 #df:   grados de libertad.
@@ -64,11 +65,11 @@ ggplot(data.frame(X=c(-4,4)), aes(x = X)) +
 x_dt <- seq(-10, 10, by = 0.01) 
 y_dt <- dt(x_dt, df = 3)  
 plot(y_dt , col="green")
-#Repito, es similar pero no igual a la distribución gaussiana
+#Repito, es similar pero no igual a la distribuci?n gaussiana
 
 
 #1.3 Probabilidad acumulada (CDF) de un punto hacia la cola esta dado por 
-#la función es pt(q, df, ncp, lower.tail = TRUE, log.p = FALSE)
+#la funci?n es pt(q, df, ncp, lower.tail = TRUE, log.p = FALSE)
 #Donde: 
 #q 	vector de cuantiles o el valor de t
 #df	grados de libertad.
@@ -84,10 +85,8 @@ y_pt <- pt(x_pt, df = 5, lower.tail = FALSE)
 plot(y_pt, col="blue", lty=1) 
 points(y_dt, col="red", lty=1)
 
-
-
 #1.4  Para obtener una probabilidad con cierto intervalo de confianza 
-#y  grados de libertad, el valor del estadístico t lo obtenemos así:
+#y  grados de libertad, el valor del estad?stico t lo obtenemos as?:
 #qt(p, df, ncp, lower.tail = TRUE, log.p = FALSE)
 #Donde:
 #p:  vector de probabilidad o intervalo de confianza
@@ -95,7 +94,7 @@ points(y_dt, col="red", lty=1)
 #lower.tail: TRUE (default), probabilidad de P [ X<= x],FALSE P[ X >x ] 
 #qt() proporciona valores t criticos.
 
-#Ejemplo: Obtener el estadístico t para 95% de intervalo de confianza y df=10
+#Ejemplo: Obtener el estad?stico t para 95% de intervalo de confianza y df=10
 intconf =.95 #interalo de confianza
 gl <-10 # 10 grados de libertad
 est_t<-qt(intconf,gl,lower.tail=TRUE)
@@ -123,8 +122,8 @@ mu=500
 
 t<- (media_muestra- mu)/(s /sqrt(n))
 t
-#Obtenemos el valor de t-critico para 95% de confianza, se podría discutir si 95% 
-#es suficiente, quizás 90 es suficiente o 99%
+#Obtenemos el valor de t-critico para 95% de confianza, se podr?a discutir si 95% 
+#es suficiente, quiz?s 90 es suficiente o 99%
 intconf =0.95
 gl <-24  # 25 -1 grados de libertad
 tcritico<-qt(intconf,gl, lower.tail=TRUE)
@@ -138,27 +137,27 @@ ggplot(data.frame(X=c(0,10)), aes(x = X)) +
   geom_vline(xintercept=tcritico, color="red")+
   xlab("t-critico (rojo) y T muestra (azul)")
 
-#Podemos ver que el estadístico t obtenido es 2.2 superior al tcritico para 
+#Podemos ver que el estad?stico t obtenido es 2.2 superior al tcritico para 
 #tener 95% de confianza
-#El estudiante podrá jugar con los valores de desviación e intervalo de confianza 
+#El estudiante podr? jugar con los valores de desviaci?n e intervalo de confianza 
 
 #Ejemplo 2
-#Tenemos una fábrica de tornillos
+#Tenemos una f?brica de tornillos
 #los tornillos tiene una longitud media de 20mm 
-#y una desviación estándar de 1mm
-#queremos saber cuál es la probabilidad de que en una muestra de 25 elementos
+#y una desviaci?n est?ndar de 1mm
+#queremos saber cu?l es la probabilidad de que en una muestra de 25 elementos
 #la media sea menor que 20.5mm
 
 #primero calculamos t 
 
 t<- (20.5-20)/(1/sqrt(25))
 t
-#calculamos el CDF para este valor t mediante la función pt
+#calculamos el CDF para este valor t mediante la funci?n pt
 gl=25-1
 ptt <-pt(t,df=gl, lower.tail=TRUE)
 ptt
-#La probabilidad de que la mu de la población sea menor que 20.5 es 99%,
-#esto es lo mismo que revisar la tabla al revés, es decir , dados los 
+#La probabilidad de que la mu de la poblaci?n sea menor que 20.5 es 99%,
+#esto es lo mismo que revisar la tabla al rev?s, es decir , dados los 
 #grados de libertad, y el valor de t buscar cual es intervalo de confianza
 
 
@@ -174,17 +173,15 @@ n=20
 gl=n-1
 tcritico<-qt(intconf,gl)
 tcritico
-# O viceversa teniendo un  valor t y gl  que porcentaje del área se cubre 
+# O viceversa teniendo un  valor t y gl  que porcentaje del ?rea se cubre 
 pt(1.73,19)
-
-
 
 #Para el siguiente ejercicio hay que recordar que la suma de las probabilidades
 #es siempre 1 y que el CDF se calcula desde -inf al valor  o  desde el valor a +inf
 
 #Otro ejemplo: Encontrar un valor probabilidad de las colas para un valor t dado:   
 #Aqui estamos viendo la probabilidad acumulada de los 2 alfas
-#esto es equivalente a cuando en la distribución normal restábamos 2 pnorms
+#esto es equivalente a cuando en la distribuci?n normal rest?bamos 2 pnorms
 #para t=1.8 y gl=10
 
 2*(1-pt(1.8,10))
@@ -196,7 +193,7 @@ intconf=.95
 gl=10
 t <- qt(intconf,gl)
 t
-#creamos una distribución T de 20 elementos  con df=10
+#creamos una distribuci?n T de 20 elementos  con df=10
 
 X<-rt(20,df=gl)
 serie <- data.frame(X=X)
@@ -207,7 +204,7 @@ ggplot(data=serie,  aes(x = X)) +
   geom_vline(xintercept=t)+
   geom_vline(xintercept=-t)
 
-#El área debajo de la curva y más allá de las verticales (+-t)
+#El ?rea debajo de la curva y m?s all? de las verticales (+-t)
 #estaria dado por :
 sprintf("la probabilidad acumulada CDF de las dos colas es %2.2f ",2*(1-pt(1.8,10)))
 #En otras palabras la probabilidad que un valor sea <-t o >t es del 10%
@@ -216,21 +213,47 @@ sprintf("la probabilidad acumulada CDF de las dos colas es %2.2f ",2*(1-pt(1.8,1
 #PARTE2 TAREA DEL ESTUDIANTE
 ######################################################################
 #Un fabricante produce 2 tipos de luminarias de sodio ,un tipo de   
-#de vapor de sodio a baja presión SBP y las de alta presión SAP. 
-#Las dos tienen distinta cromática. La EEQ esta interesada en comprar varios miles
-#y requiere hacer un análisis de la durabilidad.
-#Realiza una muestra  de 15 items SBPs que arroja un tiempo de duración de 
+#de vapor de sodio a baja presion SBP y las de alta presion SAP. 
+#Las dos tienen distinta cromatica. La EEQ esta interesada en comprar varios miles
+#y requiere hacer un analisis de la durabilidad.
+#Realiza una muestra  de 15 items SBPs que arroja un tiempo de duracion de 
 #11.3 semanas con un s=2.5, realiza otra muestra de SAPs con 10 muestras que
-#evidencia duración de 8 semanas con un s= 3.2 
-#Basado en estas encuestas que tipo debería comprar la EEQ si lo que le interesa es
+#evidencia duracion de 8 semanas con un s= 3.2 
+#Basado en estas encuestas que tipo deberia comprar la EEQ si lo que le interesa es
 #la durabilidad
-
+#Calculo el valor de t
+intconf =0.95
+gl <-14  # 15 -1 grados de libertad
+tcritico<-qt(intconf,gl, lower.tail=TRUE)
+tcritico
 
 
 #PROBLEMA 2
-#Una fábrica de produce resistencias eléctricas de alta precisión, garantizan 2% de variabilidad 
-#Una muestra de 6 ítems  de 2.80 ohms da una media muestral de 2.62 ohmios y una s de la muestra de 0.121 ohmios.
-#Le piden su opinión de si esta muestra representa la media de la población que se publica
-#O en otras palabra a que nivel de significancia se halla la muestra. 
+#Una f?brica de produce resistencias el?ctricas de alta precisi?n, garantizan 2% de variabilidad 
+#Una muestra de 6 ?tems  de 2.80 ohms da una media muestral de 2.62 ohmios y una s de la muestra de 0.121 ohmios.
+#Le piden su opini?n de si esta muestra representa la media de la poblaci?n que se publica
+#o en otras palabras a que nivel de significancia se halla la muestra. 
 
+#Calculo el valor de t
+n=6
+media_muestra=2.80
+s=0.121
+mu=2.62
+
+t<- (media_muestra- mu)/(s /sqrt(n))
+t
+#Obtenemos el valor de t-critico para 95% de confianza, se podr?a discutir si 95% 
+#es suficiente, quiz?s 90 es suficiente o 99%
+intconf =0.98
+gl <-5  # 6 -1 grados de libertad
+tcritico<-qt(intconf,gl, lower.tail=TRUE)
+tcritico
+#notar qt nos da el tcritico con UNA  sola cola
+#graficando 
+
+ggplot(data.frame(X=c(0,10)), aes(x = X)) +
+  stat_function(fun = dt, args =list(df=gl))+
+  geom_vline(xintercept=t , color ="blue")+
+  geom_vline(xintercept=tcritico, color="red")+
+  xlab("t-critico (rojo) y T muestra (azul)")
 

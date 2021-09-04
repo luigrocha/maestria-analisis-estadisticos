@@ -2,7 +2,6 @@
 #Este  archivo contiene 2 partes
 # 1.-Demostración de las funciones en R
 # 2.-El trabajo que el estudiante debe desarrollar 
-
 #Introducción  a las funciones de R 
 #=======================================
 #En R las funciones de distribución normal están precedidas por un prefijo, 
@@ -13,16 +12,12 @@
 #d de "densidad", la función de densidad (PDF)
 #r de "aleatorio", para crear una variable aleatoria que tiene una  
 # distribución especifica
-
-
 #cargamos la librería 
 rm(list=ls())
 require(ggplot2)
 require(e1071)
-
 #1.1 :Obtener de una distribución normal y   diagramarla
 #En la practica estos son los datos que usted recolecta del negocio
-
 #Para obtener una serie de datos que tienen una distribución normal usaremos
 #la función rnorm, su sintaxis es :rnorm(n, mean = 0, sd = 1)
 #Donde : 
@@ -30,22 +25,16 @@ require(e1071)
 #mean		media del vector, por defecto 0
 #sd			vector de desviación  std. por defecto 1
 #lower.tail   TRUE (default), probabilidad de P [ X <= x], FALSE P[ X >x ] 
-
 serie1 <-  rnorm(10)
-
-
+serie1
 #Verifiquemos las características de la serie
 mean(serie1) #debe ser cercanos a 0 para series grandes
 sd(serie1) #deberia ser cercano a 1 para series grandes
 var(serie1)#deberia ser cercano a 1 para series grandes
-
 print(skewness(serie1))
 print(kurtosis(serie1))
 #Note que los estadisticos no son los esperados , pero esto se debe a que 
 #solo tenemos 10 elementos .Veamos con más elementos.
-
-
-
 #la siguiente  serie tiene  una media de 20
 serie2 <- rnorm(100, 20 ) 
 head(serie2)
@@ -70,7 +59,7 @@ head(den_serie3)
 df1 <- data.frame(x=serie1,y=den_serie1)
 #Una forma fácil de visualizar un data.frame es mediante la función plot()
 #Esta función no tienen muchas opciones ,pero hace su trabajo 
-par(mar=c(1,1,1,1)) #definimos unos márgenes para el plot 
+par(mar=c(3,3,1,1)) #definimos unos márgenes para el plot 
 #plotemos la densidad 
 plot(df1, type="h")
 #plotemos como histograma
@@ -202,12 +191,11 @@ V2 = rnorm(10000, mean = 50, sd = 25)
 #obtenemos su densidad 
 dens <- density(V2)
 dd <- with(dens,data.frame(x,y))
+dd
 qplot(x,y,data=dd,geom="line")+
   geom_ribbon(data=subset(dd,x> 25 & x< 30),aes(ymax=y),ymin=0,
               fill="red",colour=NA,alpha=0.5)
 pnorm(30,mean = 50, sd = 25) -pnorm(25,mean = 50, sd = 25)
-
-
 
 #El estudiante podrá cambiar el valor de área y el parámetro
 #lower.tail= false , esto nos dará el CDF desde el número dado
@@ -247,32 +235,117 @@ sprintf("estadístico z para prob %1.4f es %1.4f",.005, qnorm(.0125))
 #qnorm
 #PARTE 2  TAREA DEL ESTUDIANTE
 #=====================================
-#Prob 1: El número de quejas por día  de los clientes de la compañía
+#Problema1: El número de quejas por día  de los clientes de la compañía
 #Turra CA es la siguiente: 
 # 5 24 12 25 43 43 34 21 14 36 30 16 42 10 42 29  5 19 17  8
 #Ingrese estos valores a un vector(podría reutilizar serie1)  y calcule 
 #la media, sd, y var, plotee el histograma  y la densidad de la  serie
 #usando las mismas líneas de la sentencia ggplot usadas para la serie1 
 #Indique : Que tipo de distribución tiene
-
+s1 <- c(5, 24, 12, 25, 43, 43, 34, 21, 14, 36, 30, 16, 42, 10, 42, 29,  5, 19, 17,  8)
+s1
+#install.packages("rriskDistributions")
+#library(rriskDistributions)
+#res1<-fit.cont(data2fit=rnorm(s1) )
+#res1
+#Verifiquemos las características de la serie
+mean(s1) #debe ser cercanos a 0 para series grandes
+sd(s1) #deberia ser cercano a 1 para series grandes
+var(s1)#deberia ser cercano a 1 para series grandes
+max(s1)
+print(skewness(s1))
+print(kurtosis(s1))
+#?rnorm
+s11 <- rnorm(s1, 23.75, 13.05)
+s11
+den_s1<-dnorm(s11)
+head(s11)
+head(den_s1)
+dfs1 <- data.frame(x=s11,y=den_s1)
+den_s1
+par(mar=c(2,2,2,2)) #definimos unos márgenes para el plot 
+#plotemos la densidad 
+plot(dfs1, type="h")
+#plotemos como histograma
+ggplot (dfs1, aes(x=x)) +
+  geom_histogram(binwidth = 1) + 
+  labs(x="numero ", y= "cuenta")
+#ahora ploteamos el valor 
+############################
+serie4 <-rnorm(s1 , mean=23.75, sd=13.05)
+df4 <- data.frame(X=serie4 , Y=dnorm(serie4, mean=23.75 ,sd=13.05))
+#grafiquemos  
+g<- ggplot(data=df4 , aes(x=X, y=Y))+
+  geom_point()+
+  geom_line()
+g
 #Problema2 : La compañía Turra CA desea bajar el tiempo de atención 
 #a clientes, El gerente desea que la media de atención sea de 10 días
 #usted ha medido el proceso y sabe que tienen una distribución normal 
 #cuya media es de 17.5 días y varianza es de 350. 
 #Le  preguntan cual es la probabilidad de los casos estén por debajo de
 #10 días?
+#u=17.5
+#ds=sqrt(varp2)
+#p(x<10)
+varp2 <- 350
+sdp2 <- sqrt(varp2)
+sdp2
+prob_p2a <-1 -pnorm(10, mean=17.5 , sd=sdp2, lower.tail=FALSE)
+prob_p2a
+#grafico
+seriep2 <-rnorm(1000 , mean=17.5, sd=sdp2)
+dfp2 <- data.frame(X=seriep2 , Y=dnorm(seriep2, mean=17.5 ,sd=sdp2))
+x=10
+prob_valor <- dnorm(x, mean=17.5, sd=sdp2)
+sprintf("La probabilidad del número %1.2f  es %1.7f  ",x, prob_valor)
+g<- ggplot(data=dfp2 , aes(x=X, y=Y))+
+  geom_point()+
+  geom_vline(xintercept=x, color="red")
+g
+
 #Cual es la probabilidad de que los casos estén entre 5 a 10 días
-
-
+#p(10>x<5)
+prob_p2b <- pnorm(5, mean=17.5 , sd=sdp2, lower.tail=FALSE) - pnorm(10, mean=17.5 , sd=sdp2, lower.tail=FALSE)
+prob_p2b
+#grafico
+seriep2 <-rnorm(1000 , mean=17.5, sd=sdp2)
+dfp2 <- data.frame(X=seriep2 , Y=dnorm(seriep2, mean=17.5 ,sd=sdp2))
+x1=5
+x2=10
+prob_valor <- dnorm(x, mean=17.5, sd=sdp2)
+sprintf("La probabilidad del número %1.2f  es %1.7f  ",x, prob_valor)
+g<- ggplot(data=dfp2 , aes(x=X, y=Y))+
+  geom_point()+
+  geom_vline(xintercept=x1, color="red")+
+geom_vline(xintercept=x2, color="red")
+g
 
 #Pregunta: Suponga que los pesos cajas producidos en Acme  
 #tienen pesos que normalmente se distribuyen con una media de 17.46 gramos
 #y una varianza de 375.67 gramos.
 #¿Cuál es la probabilidad de que una muestra elegida al azar pese más de
 #19 gramos?
+#u=17,46
+#p(x>19)= 1-p(x<19)
+var3=375.67
+sd3=sqrt(var3)
+prob_p2c = 1 - pnorm(19, mean=17.46 , sd=sd3, lower.tail=FALSE)
+prob_p2c
+#grafico
+seriep2 <-rnorm(1000 , mean=17.46, sd=sd3)
+dfp2 <- data.frame(X=seriep2 , Y=dnorm(seriep2, mean=17.46 ,sd=sd3))
+x=19
+prob_valor <- dnorm(x, mean=17.46, sd=sd3)
+sprintf("La probabilidad del número %1.2f  es %1.7f  ",x, prob_valor)
+g<- ggplot(data=dfp2 , aes(x=X, y=Y))+
+  geom_point()+
+  geom_vline(xintercept=x, color="red")
+g
 
 
-
-
-
+install.packages("rriskDistributions")
+library(rriskDistributions)
+res1<-fit.cont(data2fit=rnorm(s1))
+res1
 
