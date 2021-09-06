@@ -240,8 +240,9 @@ pbinom(5, size = 12, prob = .4)
 #El 60% de los hogares prefiere la marca
 #Se hacen 12 encuestas 
 #Cual es la probabilidad de que al revisar 7 encuestas sea Marathon la preferida
-pbinom(7,size=12, p=.6)
+a=pbinom(7,size=12, p=.6)
+sprintf("%1.7f", a)
 #Del mismo problema anterior cual es la probabilidad de que m?s de 
 #2 encuestas prefieran la marca
-pbinom(7 , size=12, prob=.6, lower.tail=FALSE)
-
+b = pbinom(2 , size=12, prob=.6, lower.tail=FALSE)
+sprintf("%1.7f", b)

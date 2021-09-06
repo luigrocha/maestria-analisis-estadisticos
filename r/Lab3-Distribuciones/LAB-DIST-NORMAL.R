@@ -254,9 +254,7 @@ print(skewness(s1))
 print(kurtosis(s1))
 den_s1<-dnorm(s1)
 head(s1)
-head(den_s1)
 dfs1 <- data.frame(x=s1,y=den_s1)
-dfs1
 par(mar=c(3,3,2,2)) #definimos unos márgenes para el plot 
 #plotemos la densidad 
 plot(dfs1$x, type="h")
@@ -303,8 +301,7 @@ seriep2 <-rnorm(1000 , mean=17.5, sd=sdp2)
 dfp2 <- data.frame(X=seriep2 , Y=dnorm(seriep2, mean=17.5 ,sd=sdp2))
 x1=5
 x2=10
-prob_valor <- dnorm(x, mean=17.5, sd=sdp2)
-sprintf("La probabilidad del número %1.2f  es %1.7f  ",x, prob_valor)
+sprintf("La probabilidad del número entre %1.2f y %1.2f  es %1.7f  ",x1,x2, prob_p2b)
 g<- ggplot(data=dfp2 , aes(x=X, y=Y))+
   geom_point()+
   geom_vline(xintercept=x1, color="red")+
@@ -320,22 +317,17 @@ g
 #p(x>19)= 1-p(x<19)
 var3=375.67
 sd3=sqrt(var3)
-prob_p2c = 1 - pnorm(19, mean=17.46 , sd=sd3, lower.tail=FALSE)
+prob_p2c = pnorm(19, mean=17.46 , sd=sd3)
 prob_p2c
+prob_p2 = pnorm(19, mean=17.46 , sd=sd3, lower.tail=FALSE)
+prob_p2
 #grafico
 seriep2 <-rnorm(1000 , mean=17.46, sd=sd3)
 dfp2 <- data.frame(X=seriep2 , Y=dnorm(seriep2, mean=17.46 ,sd=sd3))
 x=19
-prob_valor <- dnorm(x, mean=17.46, sd=sd3)
-sprintf("La probabilidad del número %1.2f  es %1.7f  ",x, prob_valor)
+sprintf("La probabilidad de que una muestra pese mas que %1.2f  es %1.7f",x, prob_p2)
 g<- ggplot(data=dfp2 , aes(x=X, y=Y))+
   geom_point()+
   geom_vline(xintercept=x, color="red")
 g
-
-
-#install.packages("rriskDistributions")
-#library(rriskDistributions)
-res1<-fit.cont(data2fit=rnorm(s1))
-res1
 

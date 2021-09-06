@@ -221,11 +221,25 @@ sprintf("la probabilidad acumulada CDF de las dos colas es %2.2f ",2*(1-pt(1.8,1
 #evidencia duracion de 8 semanas con un s= 3.2 
 #Basado en estas encuestas que tipo deberia comprar la EEQ si lo que le interesa es
 #la durabilidad
-#Calculo el valor de t
+#Cmuestra SBP
 intconf =0.95
-gl <-14  # 15 -1 grados de libertad
 tcritico<-qt(intconf,gl, lower.tail=TRUE)
 tcritico
+
+n=15
+gl=n-1
+media_muestra=11.3
+s=2.5
+t=tcritico
+med_pob1 <- (media_muestra-(t*(s/sqrt(n))))
+med_pob1
+intconf =0.95
+n=10
+media_muestra=8
+s=3.2
+med_pob2 <- (media_muestra-(t*(s/sqrt(n))))
+med_pob2
+
 
 
 #PROBLEMA 2
@@ -234,21 +248,15 @@ tcritico
 #Le piden su opini?n de si esta muestra representa la media de la poblaci?n que se publica
 #o en otras palabras a que nivel de significancia se halla la muestra. 
 
-#Calculo el valor de t
-n=6
-media_muestra=2.80
-s=0.121
-mu=2.62
+t=0.02
+muestraResistencia=6
+mediaResistencia=2.62
+desviacion=0.121
 
-t<- (media_muestra- mu)/(s /sqrt(n))
-t
-#Obtenemos el valor de t-critico para 95% de confianza, se podr?a discutir si 95% 
-#es suficiente, quiz?s 90 es suficiente o 99%
-intconf =0.98
-gl <-5  # 6 -1 grados de libertad
-tcritico<-qt(intconf,gl, lower.tail=TRUE)
-tcritico
-#notar qt nos da el tcritico con UNA  sola cola
+#t<-(media_muestra- mu)/(s /sqrt(n))
+#mu=media_muestra-((t)(s)/sqrt(n))
+mu<-(mediaResistencia-((t)*(desviacion)/sqrt(muestraResistencia)))
+sprintf("%1.7f", mu)
 #graficando 
 
 ggplot(data.frame(X=c(0,10)), aes(x = X)) +
