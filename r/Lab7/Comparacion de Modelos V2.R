@@ -12,7 +12,7 @@ require(reshape2)
 require(boot)
 #Bajar el archivo de https://www.jaredlander.com/data/
 #Cargamos el dataset housing NY
-housing <- read.table("c:\\users\\alfonso\\Documents\\housingNew.csv" , sep=",", header=TRUE, stringsAsFactors=FALSE)
+housing <- read.table("https://www.jaredlander.com/data/housingNew.csv" , sep=",", header=TRUE, stringsAsFactors=FALSE)
 #Examinamos el dataset
 names(housing)
 class(housing)
@@ -399,6 +399,12 @@ updatewind <- function (row)
   return(temp)
 }
 f$temp <- apply(f ,1, updatewind)  # args df, 1=rows  2=cols ,function
+library(tidyverse)
+library(plyr)
+library(dplyr)
+require(gridExtra)
+fw  <-  dplyr::inner_join(x=flights , y=weather, 
+by=c("time_hour"="time_hour", "origin"="origin"))
 ##########################################
 #TAREA DEL ESTUDIANTES
 ###########################################
@@ -418,13 +424,88 @@ f$temp <- apply(f ,1, updatewind)  # args df, 1=rows  2=cols ,function
 #NO ENTREGAR LOS EJEMPLOS DE ESTE LABORATORIO UNICAMENTE LA TAREA
 #La calificaci�n ser� basada en el analisis no en el c�digo, puesto que la 
 #plantilla del c�digo ya esta  en este laboratorio 
-
 #1.- Deber� crear  3 modelos distintos con diferentes predictoras
+head(fw)
+names(fw)
+ModelA <- lm(fw$dep_delay ~ fw$temp + fw$air_time + fw$day.x )
+ModelA
+ModelB <- lm(fw$dep_delay ~ fw$month.x * fw$distance +fw$temp)
+ModelB
+ModelC <- lm(fw$dep_delay ~ fw$origin + fw$air_time + fw$temp)
+ModelC
+multiplot(ModelA, ModelB,ModelC)
+ModelgA <- glm(fw$dep_delay ~ fw$temp + fw$air_time + fw$day.x )
+ModelgA
+ModelgB <- glm(fw$dep_delay ~ fw$month.x * fw$distance +fw$temp)
+ModelgB
+ModelgC <- glm(fw$dep_delay ~ fw$origin + fw$air_time + fw$temp)
+ModelgC
+multiplot(ModelgA, ModelgB,ModelgC)
+
 #2.- Presente el summary de cada modelo, los estad�sticos y su an�lisis
+summary(ModelA)
+
+summary(ModelB)
+
+summary(ModelC)
+
 #3.- Presente los estimadores de AIC y BIC,  presente su an�lisis
+df1aic <-AIC(ModelA, ModelB,ModelC)
+df1aic
+df1bic <-BIC(ModelA, ModelB,ModelC)
+df1bic
+df1aic$BIC <- df1bic$BIC
+min_val_AIC <-min(df1aic$AIC)
+min_var_AIC =df1aic[df1aic$AIC==min_val_AIC,1]
+min_val_BIC <-min(df1aic$BIC)
+min_var_BIC =df1aic[df1aic$BIC==min_val_BIC,1]
+ggplot (df1aic, aes(x=df))+
+  geom_point(aes(y=AIC, color=AIC), color="blue")+
+  geom_line(aes(y=AIC, color=AIC))+
+  geom_point(aes(y=BIC, color=BIC), color="red")+
+  geom_line(aes(y=BIC, color=BIC))+
+  labs(title="AIC/BIC" )+
+  ylab("AIC en Azul/BIC en Rojo Value")+
+  xlab("Num Variables")+
+  geom_point(aes(x=min_var_AIC, y=min_val_AIC, size=4), color="blue")+
+  geom_point(aes(x=min_var_BIC, y=min_val_BIC, size=4), color="red")  
+
+comp_glmM7 <- data.frame(H1=ModelgA$deviance,H2=ModelgB$deviance,H3=ModelgC$deviance)
+#Grafiquemos 
+comp_meltedM7 <-melt(comp_glmM7)
+names(comp_meltedM7) <- c("model", "Deviance")
+names(comp_meltedM7)
+
+ggplot(comp_meltedM7, aes( model, Deviance , fill=model)) +
+  geom_col()+
+  labs(title="Mejor Modelo Deviance mas bajo")
 #4.- Revise los plots de cada uno de los modelos buscando la presencia 
 #de outliers que tengan apalacamiento e influencia, realice un an�lisis
 #en base a estos gr�ficos (plots) y de ser el caso sugiera outliers que usted considera
 #que deben ser eliminados. Presente la salida y su analisis
+par("mar")
+par(mar=c(2,2,2,2))
+plot(ModelA, which=1, id.n=10) # Fitted X vs Residuals Y 
+plot(ModelA, which=2) #QQ plot 
+plot(ModelA, which=3) # Fitted X vs Residuals std Y 
+plot(ModelA, which=4 , id.n=10) #Observaciones vs distancia Cook
+plot(ModelA, which=5, id.n=10) #Apalancamiento vs residuos y Distancia Cook
+plot(ModelA, which=6, id.n=10) #Apalancamiento vs Distancia Cook
+
+plot(ModelB, which=1, id.n=10) # Fitted X vs Residuals Y 
+plot(ModelB, which=2) #QQ plot 
+plot(ModelB, which=3) # Fitted X vs Residuals std Y 
+plot(ModelB, which=4 , id.n=10) #Observaciones vs distancia Cook
+plot(ModelB, which=5, id.n=10) #Apalancamiento vs residuos y Distancia Cook
+plot(ModelB, which=6, id.n=10) #Apalancamiento vs Distancia Cook
+
+plot(ModelC, which=1, id.n=10) # Fitted X vs Residuals Y 
+plot(ModelC, which=2) #QQ plot 
+plot(ModelC, which=3) # Fitted X vs Residuals std Y 
+plot(ModelC, which=4 , id.n=10) #Observaciones vs distancia Cook
+plot(ModelC, which=5, id.n=10) #Apalancamiento vs residuos y Distancia Cook
+plot(ModelC, which=6, id.n=10) #Apalancamiento vs Distancia Cook
+
 #5.- Conclusiones del laboratorio , presente un cuadro en el que indique
 #el resultado de cada prueba y la recomendacion final del mejor modelo 
+

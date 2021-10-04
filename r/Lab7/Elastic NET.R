@@ -55,10 +55,11 @@ require(glmnet)
 require(useful)
 #Veamos el dataset acs , se trata de un censo 
 #Puede descargar la data  de  https://www.jaredlander.com/data/
-download.file("https://www.jaredlander.com",
+#download.file("https://www.jaredlander.com",
               "data/acsNew.csv")
 #Yo ya la tengo descargada. MODIFIQUE LA SIGUIENTE LINEA 
-acs <-read.table("C:\\Users\\Alfonso\\Documents\\acsNew.csv",header=TRUE, sep=",", stringsAsFactors=FALSE)
+acs <-read.table("https://www.jaredlander.com",
+                 "data/acsNew.csv",header=TRUE, sep=",", stringsAsFactors=FALSE)
 class(acs)
 names(acs)
 head(acs)
